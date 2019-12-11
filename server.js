@@ -8,6 +8,14 @@ server.get('/', (req, res) => {
 
 //custom middleware
 
-function logger(req, res, next) {}
+  // - `logger` logs to the console the following information about each request: request method, request url, and a timestamp
+  // - this middleware runs on every request made to the API
+
+function logger(req, res, next) {
+	console.log(`[${new Date().toISOString()}] - ${req.method} - ${req.url} - ${req.get("User-Agent")}`)
+	next()
+}
+
+server.use(logger)
 
 module.exports = server;
