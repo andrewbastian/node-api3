@@ -1,6 +1,12 @@
 const express = require('express');
-
+const userRouter = require('./users/userRouter')
+const postRouter = require('./posts/postRouter')
 const server = express();
+
+server.use(logger)
+server.use(express.json())
+server.use('/api/posts', postRouter)
+server.use('/api/users', userRouter)
 
 server.get('/', (req, res) => {
   res.send(`<h2>Let's write some middleware!</h2>`);
@@ -16,6 +22,10 @@ function logger(req, res, next) {
 	next()
 }
 
-server.use(logger)
+server.use((err, req, res, next) => {
+	res.status(500).json({
+		message: "Oops, something went wrong", err
+	})
+})
 
 module.exports = server;
